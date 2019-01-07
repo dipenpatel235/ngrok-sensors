@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf.urls import url, include
 from rest_framework import routers
 from sensors.quicksensor import views
-from sensors.quicksensor.views import SensorsViewSet, AddSensorApiViewSet
+from sensors.quicksensor.views import SensorsViewSet, AddSensorApiViewSet , InstallSensorApiViewSet
 
 
 
@@ -27,6 +27,7 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'sensors', views.SensorsViewSet, base_name='sensors')
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -38,6 +39,11 @@ urlpatterns = [
         r'^addsensor/$',
         AddSensorApiViewSet.as_view(),
         name='addsensor'
+    ),
+    url(
+        r'^installsensor/$',
+        InstallSensorApiViewSet.as_view(),
+        name='installsensor'
     )
 ]
 

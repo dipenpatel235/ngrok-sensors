@@ -2,10 +2,10 @@ username="admin"
 password="12345"
 email="admin@example.com"
 
-cd /opt/tutorial/sensors
+cd /opt/tutorial/ngrok-sensors/sensors
 
 rm -rf db.sqlite3
-rm -rf sensors/quicksensor/migrations
+rm -rf sensors/migrations
 
 python3 manage.py makemigrations
 python3 manage.py makemigrations sensors

@@ -17,6 +17,13 @@ from sensors.quicksensor.serializers import GroupSerializer
 from sensors.quicksensor.serializers import UserSerializer
 
 from sensors.quicksensor.models import Sensors
+from django.forms.models import model_to_dict
+from django.core.exceptions import ObjectDoesNotExist
+
+
+from django.http import HttpResponse
+import json
+from django.core import serializers
 
 
 import logging
@@ -74,3 +81,18 @@ class AddSensorApiViewSet(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)            
+
+class InstallSensorApiViewSet(APIView): 
+    def get(self,request):        
+        try:
+            sensorid = Sensors.objects.get(sensorid=request.GET['sensorid'])
+            dict_obj = model_to_dict( sensorid )
+            if (request.GET['sensorid'] == dict_obj['sensorid'] and request.GET['ip'] == dict_obj['ip'] ):
+                sensorid = dict_obj['sensorid']
+                ip = dict_obj['ip']
+                content={'sensorid':sensorid, 'ngrokid':NGROK_TOKEN}
+                return Response(content)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)            
+        except ObjectDoesNotExist:
+            return Response(text="Please contact admin. requested details not match.", status=status.HTTP_400_BAD_REQUEST)            
